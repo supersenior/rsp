@@ -1,0 +1,415 @@
+/*-----------  Project Data Table  -----------*/
+
+#projects-show
+  overflow: hidden
+
+  .wt-page-layout
+    @include calc(height, '100% + 2px')
+
+  .wt-page-content__main
+    padding: 0
+
+/*-----------  Table Cells  -----------*/
+
+.wt-tablecell
+  cursor: pointer
+  max-width: 230px
+  @include user-select(none)
+
+  .wt-tablecell__value
+    padding: 0.5em
+    display: block
+    min-height: 41px
+
+.wt-tablecell--sidebar
+
+  .wt-tablecell__popup
+    top: 0
+    width: 95%
+    right: -95%
+    color: $white
+    display: none
+    padding: 0.33em
+    position: absolute
+    background-color: $black
+
+  .wt-tablecell__value
+    width: 185px
+    padding: 0 0.5em
+    min-height: initial
+
+  &.wt-tablecell--grouping
+
+    .wt-tablecell__value
+      @include ellipsis()
+
+.wt-tablecell--column
+
+  .wt-tablecell__discrepency-flag
+    top: 4px
+    right: 4px
+    width: 0
+    height: 0
+    position: absolute
+    border-style: solid
+    border-color: transparent
+    border-width: 0 1.25em 1.25em 0
+
+  .wt-tablecell__cell-row
+    width: 100%
+    padding: 0.33em
+    border-bottom: 1px dotted $grayLightest
+    @include clearfix()
+
+    .wt-tablecell__cell-row--title
+      float: left
+      color: $grayLight
+      font-style: italic
+      text-transform: capitalize
+      @include ellipsis()
+
+    .wt-tablecell__cell-row--value
+      float: right
+      @include ellipsis()
+
+    &:first-child
+      padding-top: 0
+
+    &:last-child
+      padding-bottom: 0
+      border-bottom: none
+
+  &.wt-tablecell--neutral
+    background-color: $yellowLight
+
+    .wt-tablecell__discrepency-flag
+      border-color: transparent $yellow transparent transparent
+
+  &.wt-tablecell--positive
+    background-color: $greenLight
+
+    .wt-tablecell__discrepency-flag
+      border-color: transparent $green transparent transparent
+
+  &.wt-tablecell--negative
+    background-color: $redLight
+
+    .wt-tablecell__discrepency-flag
+      border-color: transparent $red transparent transparent
+
+  &.wt-tablecell--grouping,
+  &.wt-tablecell--unstated
+    cursor: default
+
+  &.wt-tablecell--unstated
+    color: $orange
+    font-style: italic
+
+  &.wt-tablecell--sticky
+    cursor: default
+
+/*-----------  Header Cells  -----------*/
+
+.wt-headercell
+  max-width: 244px
+  @include user-select(none)
+
+.wt-headercell--sidebar
+
+  .select-wrapper
+    margin: 0.33em 0
+    width: 98%
+
+    &:first-child
+      margin-bottom: 0.33em
+
+.wt-headercell--column
+  max-width: 237px
+  padding: 0 15px 0 10px
+
+  .h6
+    color: $red
+    margin: 0.67em 0
+
+  small
+    display: block
+    color: $grayLight
+    font-size: 0.7em
+    margin-bottom: 0.5em
+    @include ellipsis()
+
+  img
+    height: auto
+    max-width: 160px
+    margin-top: 0.5em
+
+  .wt-dropdown
+    top: 0.5em
+    right: 0.75em
+    position: absolute
+
+  .wt-headercell__sort
+    bottom: 0.33em
+    cursor: pointer
+    color: $grayLight
+    position: absolute
+    @include inline-block()
+    @include transition()
+
+    &.wt-headercell__sort--left
+      left: 0.67em
+
+      i
+        position: absolute
+        margin-top: -21px
+        @include transform(rotate(180deg))
+
+    &.wt-headercell__sort--right
+      right: 0.67em
+
+    &:hover
+      color: $blue
+
+    &.wt-headercell__sort--disabled
+      cursor: not-allowed
+      color: $grayLighter
+
+      &:hover
+        color: $grayLighter
+
+  &.wt-footercell--sticky
+    max-width: 244px
+    padding-right: 0
+
+/*-----------  Footer Cells  -----------*/
+
+.wt-footercell
+  width: 100%
+  height: 100%
+  @include flex-layout($direction: column, $items: stretch, $justify: space-between)
+
+  .wt-footercell__header,
+  .wt-footercell__content,
+  .wt-footercell__footer
+    position: relative
+
+    .wt-footercell__data-row
+      width: 100%
+      color: $grayLight
+      font-size: 1.28em
+      letter-spacing: -0.02em
+      font-weight: $fontWeightLight
+      @include vertical-align()
+
+      em
+        font-size: 67%
+        color: $grayLight
+        font-style: italic
+
+      small
+        right: 0.5rem
+        font-size: 0.55rem
+        @include vertical-align()
+
+      &:first-child
+        color: $white
+
+  .wt-footercell__header,
+  .wt-footercell__footer
+    color: $white
+    @include flex(0 0 38px)
+
+    small
+      color: $white
+
+  .wt-footercell__content
+    padding: 0.33em 0
+    @include flex(0 1 100%)
+    @include flex-layout($direction: column, $items: stretch, $justify: space-between)
+
+.wt-footercell--sidebar
+  text-align: left
+
+  .wt-footercell__data-row
+    padding-left: 0.5rem
+    @include ellipsis()
+
+  .wt-footercell__header
+    background-color: $black
+
+  .wt-footercell__content
+
+    .wt-footercell__data-row
+      font-size: 100%
+
+      .wt-footercell__title
+        @extend .h5
+        margin-bottom: 0.5em
+
+      input
+        width: 65%
+        margin: 0 0 0 0.67em
+        @include inline-block()
+
+  .wt-footercell__footer
+    color: $grayLight
+    position: relative
+
+    .wt-footercell__expand-button
+      cursor: pointer
+      line-height: 2em
+      font-size: 1.05em
+      margin: 0 0.6em 0 0.5em
+      padding: 0.45em 0.75em
+      background-color: $black
+      border-radius: $radius $radius 0 0
+      @include user-select(none)
+      @include transition()
+
+      i
+        float: right
+        margin-top: 2px
+
+      &:hover
+        color: $white
+
+  &.wt-footercell--expanded
+
+    .wt-footercell__content + .wt-footercell__content
+      border-top: 1px solid darken($grayDarker, 3%)
+
+.wt-footercell--column
+  padding-right: 5px
+
+  .wt-footercell__data-row
+
+    div
+      color: $grayLight
+
+  .wt-footercell__header
+    background-color: $grayDarker
+
+  .wt-footercell__footer
+    background-color: $grayDarker
+
+    &.wt-footercell__footer--red
+      background-color: $red
+
+    &.wt-footercell__footer--green
+      background-color: $green
+
+  &.wt-footercell--sticky
+    padding-right: 0
+
+    .wt-footercell__footer
+      background-color: $gray
+
+      .wt-footercell__data-row
+        color: $grayLight
+
+        i
+          font-size: 133%
+          color: $grayLight
+
+  &:not(.wt-footercell--expanded)
+
+    .wt-footercell__content:first-child,
+    .wt-footercell__footer
+      margin-top: 0.67em
+
+    .wt-footercell__content:nth-child(2) em
+      opacity: 0
+
+    .wt-footercell__content:nth-child(3) em
+      top: -17px
+      position: relative
+
+  &.wt-footercell--expanded
+
+    .wt-footercell__content + .wt-footercell__content
+      border-top: 1px solid darken($grayDark, 3%)
+
+    .wt-footercell__content
+
+      .wt-footercell__data-row
+        font-size: 0.9rem
+
+  &.wt-footercell--compact
+
+    .wt-footercell__footer
+      margin-top: 0
+
+/*-----------  Table Rows  -----------*/
+
+.wt-tablerow
+
+  &.wt-tablerow--grouping
+
+    .wt-tablecell--sidebar
+      cursor: default !important
+
+      .wt-tablecell__value
+        font-size: 90%
+        letter-spacing: 0.02em
+        font-weight: $fontWeightBold
+        @include ellipsis()
+
+  &.wt-tablerow--collapsed
+
+    .wt-tablecell
+      width: 100%
+      height: 12px
+
+      .wt-tablecell__value
+        display: none
+
+    .wt-tablecell--sidebar
+      border-bottom: 1px solid $gray
+      @include striped-bg(darken($gray, 3%))
+
+    .wt-tablecell--column
+      cursor: default
+      max-width: 245px
+      border-bottom: 1px solid $grayLightest
+      @include striped-bg($grayLightest)
+
+      .wt-tablecell__discrepency-flag
+        display: none
+
+      &.wt-tablecell--neutral
+        @include striped-bg($yellowLight)
+
+      &.wt-tablecell--positive
+        @include striped-bg($greenLight)
+
+      &.wt-tablecell--negative
+        @include striped-bg($redLight)
+
+/*-----------  Table Columns  -----------*/
+
+.wt-tablecolumn
+
+  &.wt-tablecolumn--hidden
+
+    .wt-tablecell--collapsed
+      border-bottom-width: 0px
+      background: $white !important
+
+  &.wt-tablecolumn--locked
+
+    .public_fixedDataTableCell_wrap1
+      opacity: 0.5
+
+  &.wt-tablecolumn--sold
+
+    .wt-headercell--column
+
+      &:after
+        top: 0.67em
+        left: -2.33em
+        color: $white
+        content: 'SOLD!'
+        position: absolute
+        padding: 0.5em $gutterLg
+        background-color: $green
+        @include transform(rotate(-45deg))

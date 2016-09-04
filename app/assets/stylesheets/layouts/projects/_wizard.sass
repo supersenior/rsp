@@ -1,0 +1,62 @@
+/*-----------  New Project Wizard  -----------*/
+
+.wt-new-project-wizard__step
+
+  .wt-formfield
+
+    > .button-alt
+      float: left
+      margin-top: 0.85em
+
+    .wt-new-project-wizard__progress-buttons
+      float: right
+      margin-top: 0.85em
+
+      button
+        margin-top: 0
+
+        &.button-alt
+          padding: 0.5em 1em
+          margin-right: 0.25em
+
+  .wt-products-list
+    text-align: left
+    padding: $gutterSm
+    margin-top: $gutterSm
+    border-radius: $radiusLg
+    border: 1px dotted $grayLighter
+    background-color: $grayLightest
+
+  .wt-product-type
+    position: relative
+
+    .wt-product-type__remove
+      top: 8px
+      left: -25px
+      color: $grayLight
+      position: absolute
+      @include transition()
+
+      &:hover
+        color: $red
+        cursor: pointer
+
+    .wt-product-type__select
+      width: 72%
+      margin-top: 0
+      margin-right: 0.67em
+      @include inline-block()
+
+    .wt-product-type__checkbox
+      width: 23%
+      margin-top: 4px
+      @include inline-block()
+
+      label
+        margin-top: 0
+
+      input
+        margin: 0 0.5em
+
+  .wt-product-type + .wt-product-type
+    margin-top: $gutterSm

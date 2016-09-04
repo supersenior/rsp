@@ -1,0 +1,8 @@
+- if flash.any?
+  div class="wt-flash-messages wt-flash-messages--#{flash.first[0]}"
+    
+    a.wt-flash-messagee__close
+      i.icon-close
+    
+    - flash.each do |name, message|
+      = content_tag :div, message, class: "wt-flash-messages__message wt-flash-messages__message--#{name}"

@@ -1,0 +1,67 @@
+# Render the headers for the proposals
+render partial: 'export/project_sheet_header', locals: {wb: wb, sheet: sheet, product_type: product_type}
+
+@financial_data[Axlsx::coder.decode(sheet.name)] ||= []
+
+### Render the groups and attributes
+### Classes are only shown if one of the values differ between classes
+@attributes[product_type.name].each do |group, all_attributes|
+  attributes = all_attributes.select do |attr|
+    if !(@export_params[:advanced_products].include?(product_type.id) || attr.required)
+      false
+    else
+      !@export_params[:collapsed_rows].include?(attr.id)
+    end
+  end
+  next if attributes.blank?
+
+  sheet.add_row([group], style: @category_header_style)
+
+  attributes.each do |attribute|
+    # Start at class one and keep track.  It's possible that various documents have
+    # a different number of classes so we don't want to stop incrementing until
+    # we run out of classes for each document
+    class_index = 1
+    class_rows = []
+    class_descriptions = []
+    loop do
+      class_encountered = false
+      product_descriptions = @documents.map do |document|
+        product = document.products.detect { |p| p.product_type_id == product_type.id }
+        if product
+          product_class = product.product_classes.detect { |pc| pc.class_number == class_index}
+          product_class ? product_class.dynamic_value_for(product_class.description_attribute) : nil
+        else
+          nil
+        end
+      end
+      row_values = @documents.map do |document|
+        product = document.products.detect { |p| p.product_type_id == product_type.id }
+        if product
+          product_class = product.product_classes.detect { |pc| pc.class_number == class_index}
+          if product_class
+            class_encountered = true
+            product_class.dynamic_value_for(attribute)
+          else
+            nil
+          end
+        else
+          nil
+        end
+      end
+      class_descriptions << product_descriptions
+      class_rows << {attribute: attribute, class: class_index, values: row_values} if class_encountered
+      class_index += 1
+      break unless class_encountered
+    end
+    class_rows = class_rollup class_rows, class_descriptions
+    class_rows.each do |row|
+      render partial: 'export/row', locals: {wb: wb, sheet: sheet, row: row,
+                                             include_class_index: class_rows.size > 1,
+                                             financial: DynamicAttribute::FINANCIAL_ATTRIBUTES.include?(row[:attribute].display_name)}
+    end
+  end
+end
+
+render partial: 'export/project_sheet_financials', locals: {wb: wb, sheet: sheet, product_type: product_type}
+render partial: 'export/project_sheet_disclaimer', locals: {wb: wb, sheet: sheet}

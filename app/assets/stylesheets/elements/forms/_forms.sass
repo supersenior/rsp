@@ -1,0 +1,88 @@
+/*-----------  Forms, Fieldsets & Legends  -----------*/
+
+form,
+.wt-formfield
+  width: 100%
+  @include clearfix()
+
+  #{$all-buttons}
+
+    &:last-child
+      float: right
+      margin-top: 0.85em
+
+  &.processing
+    pointer-events: none
+
+    #{$all-text-inputs},
+    textarea,
+    select
+      color: $grayLighter
+      cursor: not-allowed
+      background-color: $grayLighter
+
+    #{$all-buttons}
+      color: $redLight
+      padding-left: 3em
+      cursor: not-allowed
+
+      &:before
+        opacity: 1
+        @include animation(pulse 1s ease-in-out infinite)
+
+fieldset
+  border: 0
+  margin: 0
+  padding: 0
+
+/*-----------  Labels  -----------*/
+
+label
+  display: block
+  text-align: left
+  color: $grayDarker
+  margin: 0.85em 0 0.5em
+  @include ellipsis()
+
+label + input,
+label + textarea,
+label + .select-wrapper
+  margin-top: 0 !important
+
+/*-----------  Errors  -----------*/
+
+.wt-form-errors
+  color: $red
+  font-size: 0.9em
+  padding: $gutterSm
+  border-radius: $radius
+  border: 1px solid $red
+  background-color: rgba($red, 0.15)
+
+  .wt-form-error__message
+
+/*-----------  Input Groups  -----------*/
+
+.inline-inputs
+  width: 100%
+  padding: 0 !important
+  @include justify-content(space-between)
+  @include align-items(stretch)
+  @include display(flex)
+
+  input
+    border-right: 0
+    margin-left: 0.25em !important
+    margin-right: 0.25em !important
+    @include flex(0 1 100%)
+
+    &:first-child
+      margin-left: 0 !important
+
+    &:last-child
+      margin-right: 0 !important
+
+  #{$all-buttons}
+    padding-left: 0
+    padding-right: 0
+    @include flex(1 0 7.25em)

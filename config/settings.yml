@@ -1,0 +1,192 @@
+types:
+  package:
+    attributes:
+      - title
+  product:
+    attributes:
+      - broker_commission
+      - eligibility
+      - package_sale_requirements
+      - rate
+      - rate_basis
+      - volume
+    subtypes:
+      life:
+        display_name: Basic Life
+        attributes:
+          - spouse_benefit
+          - spouse_termination_age
+          - spouse_age_reductions
+          - child_benefit_stage_one
+          - child_benefit_stage_two
+          - child_benefit_stage_three
+          - max_percent_employee_coverage
+          - employee_assistance_program
+          - identity_theft
+          - legal_financial_consultation
+          - travel_assistance
+          - will_preparation
+      employee_optional_life:
+        display_name: Employee Optional Life
+        attributes:
+          - annual_open_enrollments
+      spouse_optional_life:
+        display_name: Spouse Optional Life
+        attributes:
+          - annual_open_enrollments
+      child_optional_life:
+        display_name: Child Optional Life
+        attributes:
+          - annual_open_enrollments
+      std:
+        display_name: Short Term Disability
+        attributes:
+          - w2_preparation
+      ltd:
+        display_name: Long Term Disability
+        attributes:
+          - employee_assistance_program
+          - identity_theft
+          - social_security_filing
+          - travel_assistance
+          - w2_preparation
+      add:
+        display_name: AD&D
+        attributes:
+          - air_bag_benefit
+          - seatbelt_benefit
+          - business_travel
+          - child_care_expense
+          - child_tuition
+          - spouse_tution
+          - coma
+          - common_carrier
+          - disappearance
+          - eap
+          - felonious_assault
+          - helmet
+          - identity_theft
+          - indemnity_schedule
+          - legal_financial_consultation
+          - line_of_duty
+          - repatriation
+          - travel_assistance
+          - will_preparation
+  product_class:
+    attributes:
+      - benefit_maximum
+      - benefit_minimum
+      - benefit_schedule
+      - contributions
+      - description
+      - employer_contribution
+      - exclusions
+      - guarantee_issue
+      - participating_employees
+      - participation_requirement
+      - total_eligible_employees
+      - waiting_period
+      - waiver_of_premium
+    subtypes:
+      life:
+        attributes:
+          - accelerated_benefit
+          - age_reduction_schedule
+          - conversion
+          - portability
+      employee_optional_life:
+        attributes:
+          - accelerated_benefit
+          - age_reduction_schedule
+          - conversion
+          - earnings_definition
+          - portability
+      spouse_optional_life:
+        attributes:
+          - maximum_employee_coverage_percentage
+          - spouse_termination_age
+          - earnings_definition
+          - spouse_age_reductions
+      child_optional_life:
+        attributes:
+          - benefit_birth_to_14_days
+          - benefit_14_days_to_6_months
+          - benefit_6_months_to_19_years
+          - dependent_child_definition
+          - earnings_definition
+          - maximum_employee_coverage_percentage
+      std:
+        attributes:
+          - benefit_duration
+          - conversion
+          - disability_definition
+          - earnings_definition
+          - earnings_test
+          - elimination_period
+          - employer_fica_match
+          - family_care_incentive
+          - first_day_hospital
+          - first_day_outpatient_surgery
+          - occupational_coverage
+          - full_maternity_coverage
+          - recurrent_disability_period
+          - moving_expense_incentive
+          - organ_donor
+          - partial_disability_formula
+          - portability
+          - pre_existing_conditions
+          - reasonable_accomodation
+          - rehabilitation_incentive_benefit
+          - survivor_benefit
+          - zero_day_residual
+      ltd:
+        attributes:
+          - activities_of_daily_living
+          - benefit_duration
+          - child_care_expense
+          - cobra_continuance
+          - continuing_education
+          - cost_of_living_adjustment
+          - disability_definition
+          - drug_alcohol_limitation
+          - earnings_test
+          - elimination_period
+          - employer_fica_match
+          - extended_disability
+          - extended_earnings
+          - family_care_incentive
+          - forty_hour_work_week_limitation
+          - indexing_predisability_earnings
+          - mandatory_rehabilitation_limitation
+          - maximum_capacity_limitation
+          - mental_nervous_limitation
+          - other_income_integration
+          - own_occupation_period
+          - partial_disability_formula
+          - partial_disability_formula
+          - pension_contribution
+          - pre_existing_conditions
+          - prudent_person_language
+          - reasonable_accomodation
+          - recurrent_disability_period
+          - rehabilitation_incentive_benefit
+          - relation_expense
+          - retro_disability_benefit
+          - retro_disability_expense
+          - return_to_work_incentive
+          - self_reported_limitation
+          - social_security_offsets
+          - specific_indemnity
+          - spousal_disability
+          - spouse_and_elder_care
+          - spouse_disability
+          - survivor_benefit
+          - trial_work_days
+          - zero_day_residual
+      add:
+        attributes:
+          - accelerated_benefit
+          - age_reduction_schedule
+          - child_tuition
+          - conversion
+          - portability

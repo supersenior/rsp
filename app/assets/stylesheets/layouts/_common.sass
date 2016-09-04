@@ -1,0 +1,71 @@
+/*-----------  Content Block  -----------*/
+
+.wt-content-block
+  text-align: center
+  position: relative
+  border-radius: $radius
+  background-color: $white
+  padding: $gutterLg $gutter
+  border: 1px solid $grayLighter
+
+/*-----------  Content Wrappers  -----------*/
+
+.wt-island-block
+  width: $smallWidth
+  @extend .wt-content-block
+  @include center-align()
+
+  .wt-island-block__logo
+    width: auto
+    height: 1.67em
+
+  form,
+  .wt-formfield
+    margin-top: 2.5em
+
+/*-----------  Content Layout  -----------*/
+
+.wt-page-content
+  margin-top: -4.33em
+  padding-top: 4.33em
+  @include flex-layout($items: stretch)
+
+  .wt-page-content__main,
+  .wt-page-content__sidebar
+    height: auto
+    overflow: auto
+    position: relative
+    padding: ($gutter*2) $gutter
+    -webkit-overflow-scrolling: touch
+    -ms-overflow-style: none
+
+  .wt-page-content__main
+    @include flex(0 1 100%)
+
+  .wt-page-content__sidebar
+    display: none
+    box-shadow: $shadowDark
+    background-color: $white
+    @include flex(0 0 $smallWidth)
+
+    a[data-action='hide-sidebar']
+      top: $gutterSm
+      left: $gutter
+      color: $grayLight
+      display: block
+      position: absolute
+      @include transition()
+
+      i
+        top: 2px
+        position: relative
+        margin-right: 0.5em
+
+      &:hover
+        color: $blue
+
+  &.has-sidebar
+
+    .wt-page-content__sidebar
+      display: block !important
+

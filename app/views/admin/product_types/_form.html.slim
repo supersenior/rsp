@@ -1,0 +1,14 @@
+= form_for([:admin, @product_type || ProductType.new]) do |f|
+
+  .field
+    = f.label :name
+    br
+    = f.text_field :name
+
+  .field
+    = f.label :unit_rate_denominator
+    br
+    = f.number_field :unit_rate_denominator, step: 'any'
+
+  .actions
+    = f.submit

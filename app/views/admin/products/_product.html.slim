@@ -1,0 +1,28 @@
+- keys_to_render = attributes_for_carrier(product, product.document.carrier, product.product_type)
+
+.column
+  span.collapsable id="product-#{product.id}"= ProductType.find(product.product_type_id).name
+  .attribute_container data-update-path=admin_product_path(product) data-type="product"
+    table
+      tr
+        td Product Type
+        td
+          .select-wrapper
+            = select_tag 'product_type_id', options_for_select(ProductType.all.map { |x| [x.name, x.id] } , product.product_type_id), class: :dropdown
+        td
+        tr
+          td Contributory?
+          td colspan=2
+            = check_box_tag 'contributory', product.contributory, product.contributory, class: "object_attribute",\
+              data: {type: "product", attribute: "contributory", update_url: admin_product_path(product)}
+      - keys_to_render.each do |attribute|
+        = render 'distillery/attribute_row', attribute: attribute, object: product
+    = link_to "remove this product", admin_product_path(product), method: :delete, class: "action", data: { confirm: 'Are you sure?' }
+
+  section.product-class
+    .section_header
+      span.title classes
+      span
+        = link_to "+ New", admin_product_product_classes_path(product), class: "action", method: :post
+    = render product.product_classes.sort_by { |x| x.class_number }
+    br.clear

@@ -1,0 +1,23 @@
+doctype html
+
+html
+  head
+    title Watchtower | Admin
+
+    link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700" rel="stylesheet" type="text/css"
+
+    = stylesheet_link_tag 'application', media: 'all'
+    = csrf_meta_tags
+
+  body id=page_id class='wt-admin-page'
+
+    .wt-page-layout
+
+      == render 'partials/admin_header'
+
+      .wt-page-content
+
+        == yield
+
+    = javascript_include_tag 'application'
+    = javascript_include_tag 'admin'

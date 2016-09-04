@@ -1,0 +1,11 @@
+- keys_to_render = attributes_for_carrier(product_class, product_class.product.document.carrier, product_class.product_type)
+
+.column
+  .section_header.collapsable id="class-#{product_class.id}"
+    span.title= "Class #{product_class.class_number}"
+  .attribute_container data-update-path=admin_product_class_path(product_class) data-type="product_class"
+    table
+      - keys_to_render.each do |attribute|
+        = render 'distillery/attribute_row', attribute: attribute, object: product_class
+
+    = link_to "remove this class", admin_product_class_path(product_class), method: :delete, class: "action", data: { confirm: 'Are you sure?' }

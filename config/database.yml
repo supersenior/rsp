@@ -1,0 +1,29 @@
+default: &default
+  adapter: postgresql
+  encoding: utf-8
+  pool: 5
+  timeout: 5000
+  host: localhost
+  username: postgres
+  password: a
+
+development:
+  <<: *default
+  database: rsrp_development
+
+edge:
+  <<: *default
+  database: "watchtower"
+  host: "watchtowerdb.cdmkf2mwvy9m.us-east-1.rds.amazonaws.com"
+  username: "watchtoweruser"
+  password: "watchtowerpassword"
+  reconnect: true
+  port: 5432
+
+test:
+  <<: *default
+  database: rsrp_test
+
+production:
+  <<: *default
+  database: rsrp_production

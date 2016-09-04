@@ -1,0 +1,24 @@
+#stats
+
+  .section
+    .title Carrier Stats
+    - Carrier.all.each do |carrier|
+      .subsection
+        table.main_table
+            tr
+              th.centered colspan="2"
+                = carrier.name
+            tr
+              th Number of proposals
+              td= carrier.proposals.count
+            tr
+              th Average time per proposal
+              td= format_duration(carrier.average_review_time)
+            tr
+              th.topped Slowest keys
+              td
+                table.sub_table
+                  - carrier.time_per_attribute(5).each do |key, time|
+                    tr
+                      td= key.humanize
+                      td= format_duration(time)

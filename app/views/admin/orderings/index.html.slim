@@ -1,0 +1,35 @@
+main.wt-page-content__main
+
+  h1.h1 Attribute Orderings for #{@carrier.name}
+  hr
+  - ProductType.all.each do |product_type|
+    div= link_to product_type.name, admin_carrier_orderings_path(@carrier, product_type_id: product_type.id)
+
+
+  br
+  - if @product_type
+    h2.h2
+      = @product_type.name
+    table border=1
+      tr
+        th Name
+        th Order
+        th Category
+        th Actions
+      - attributes_for_carrier(nil, @carrier, @product_type).each do |da|
+        - ordering = @carrier.ordering_for(da, @product_type)
+        tr
+          td= da.display_name
+          td= ordering.try(:order_index)
+          td= da.category.try(:name)
+          td
+            = form_for([:admin, @carrier, ordering || @carrier.orderings.new]) do |f|
+              | Order&nbsp;
+              = f.text_field :order_index
+              = f.hidden_field :parent_type, value: da.class.name
+              = f.hidden_field :parent_id, value: da.id
+              = f.hidden_field :product_type_id, value: @product_type.id
+              .actions
+                = f.submit
+            - if ordering
+              = link_to("destroy", admin_carrier_ordering_path(@carrier, ordering), method: :delete, data: { confirm: 'Are you sure?' })

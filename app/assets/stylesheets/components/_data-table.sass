@@ -1,0 +1,196 @@
+$cellPad         : 0.4
+$cellPadEm       : #{$cellPad}em
+
+$rowWidth        : 245 - ($cellPad * $emBase)
+$headerHeight    : 125 - ($cellPad * $emBase)
+$footerHeight    : 130 - ($cellPad * $emBase)
+
+$grayBorder      : darken($grayLighter, 3%)
+$grayBorderDark  : darken($gray, 3%)
+$grayBorderDarker: darken($grayDark, 3%)
+
+/*-----------  Data Table  -----------*/
+
+.public_fixedDataTable_main
+  font-size: 85%
+  border-width: 0
+
+  .public_fixedDataTableCell_main
+    text-align: center
+    border-right: none
+    background: $grayLighter
+
+  .public_fixedDataTableCell_wrap3
+    padding: 4px
+
+  /*-----------  Rows  -----------*/
+
+  .public_fixedDataTable_bodyRow
+    background: transparent
+
+    .public_fixedDataTableCell_main
+      background: transparent
+      border-bottom: 1px solid $grayLightest
+
+      &[data-reactid*='scrollable_cells']
+        margin: 0 $cellPadEm
+        background: $white
+        width: $rowWidth !important
+        border-left: 1px solid $grayBorder
+        border-right: 1px solid $grayBorder
+
+        .public_fixedDataTableCell_wrap3
+          vertical-align: top
+          background: transparent
+          padding-right: #{$cellPad * 2}em
+
+        &:last-child
+          display: none
+
+    [data-reactid*='fixed_cells']
+
+      .public_fixedDataTableCell_main
+        background: $white
+
+        &:first-child
+          color: $grayLighter
+          text-align: left
+          overflow: visible
+          background: $gray
+          letter-spacing: 0.02em
+          border-bottom-color: $grayBorderDark
+
+    &.wt-tablerow--grouping
+
+      .public_fixedDataTableCell_main
+        background: $grayLighter
+        border-top: 1px solid $grayBorder
+        border-bottom-color: $grayBorder
+
+      [data-reactid*='fixed_cells'] .public_fixedDataTableCell_main:first-child
+        background: $grayDark
+        border-top: none
+
+    &.wt-tablerow--collapsed
+
+      .public_fixedDataTableCell_wrap3
+        padding: 0 !important
+
+  /*-----------  Header  -----------*/
+
+  .public_fixedDataTable_header
+    border-bottom: none
+    background: $grayLightest
+
+    .public_fixedDataTableCell_main
+      background: transparent
+      border-bottom: 1px solid $grayBorder
+
+      &[data-reactid*='scrollable_cells']
+        margin: #{$cellPad*1.1}em $cellPadEm 0 $cellPadEm
+        background: $white
+        width: $rowWidth !important
+        height: $headerHeight !important
+        border: 1px solid $grayBorder
+        border-radius: $radius $radius 0 0
+        border-bottom-color: transparent
+
+        .public_fixedDataTableCell_wrap3
+          padding-top: #{$cellPad / 2}em
+          padding-right: #{$cellPad * 2}em
+          background: transparent
+
+        &:last-child
+          display: none
+
+    [data-reactid*='fixed_cells']
+
+      .public_fixedDataTableCell_main
+        background: $white
+        border-bottom-color: transparent
+
+        &:first-child
+          color: $white
+          background: $grayDark
+          border-bottom: 1px solid $grayBorderDarker
+
+  /*-----------  Footer  -----------*/
+
+  .public_fixedDataTable_footer
+    background: $grayLightest
+
+    .public_fixedDataTableCell_wrap3
+      padding: 0
+      vertical-align: top
+
+    .public_fixedDataTableCell_main
+      border-top: none
+      background: transparent
+
+      &[data-reactid*='scrollable_cells']
+        margin: 0 $cellPadEm
+        background: $grayDark
+        width: $rowWidth !important
+        border-radius: 0 0 $radius $radius
+
+        .public_fixedDataTableCell_wrap3
+          // padding-right: $cellPadEm
+          background: transparent
+
+        &:last-child
+          display: none
+
+    [data-reactid*='fixed_cells']
+
+      .public_fixedDataTableCell_main
+        color: $white
+        background: $grayDark
+
+        &:first-child
+          background: $grayDarker
+
+  /*-----------  Table Columns  -----------*/
+
+  .public_fixedDataTableCell_main
+
+    &.wt-tablecolumn--hidden
+      opacity: 0.67
+      border-style: dashed !important
+
+  .public_fixedDataTable_header
+
+    .public_fixedDataTableCell_main.wt-tablecolumn--hidden
+      border-right-width: 0px !important
+
+  .public_fixedDataTable_bodyRow
+
+    .public_fixedDataTableCell_main.wt-tablecolumn--hidden
+      border-top-width: 0px !important
+      border-right-width: 0px !important
+      border-bottom-width: 0px !important
+      background: $white !important
+
+  .public_fixedDataTable_footer
+
+    .public_fixedDataTableCell_main.wt-tablecolumn--hidden
+      background-color: $white
+      border-top: none !important
+      border: 1px dashed $grayBorder
+
+  .public_fixedDataTableCell_main
+
+    &.wt-tablecolumn--hidden
+
+      &[data-reactid*='fixed_cells']
+        opacity: 1
+
+  /*-----------  Scrollbars / Shadows  -----------*/
+
+  .fixedDataTableRow_fixedColumnsDivider.fixedDataTableRow_columnsShadow
+    border-left-width: 0
+
+  .fixedDataTable_horizontalScrollbar
+
+    .public_Scrollbar_mainHorizontal
+      // background-color: $grayLightest
+

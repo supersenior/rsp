@@ -1,0 +1,33 @@
+main.wt-page-content__main
+
+
+  - if project_has_no_uploads
+
+    .wt-island-block
+      h2.h2 No Proposals or Policies
+      p We currently have no proposals or policies added to this project yet. Please click above to upload a new proposal.
+
+  - elsif !project_has_displayably_data
+
+    .wt-island-block
+      h2.h2 Thank you for uploading your document(s)
+      p WatchTower's system will email you when it's ready. This typically takes less than 24 hrs. We wish you nothing but cupcakes and rainbows in the mean time.
+
+  - else
+
+    = react_component('DashboardWrapper')
+
+aside.wt-page-content__sidebar
+
+  a(data-action='hide-sidebar')
+    i.icon-right
+    | Close
+
+  h2.h2 Proposal Archive
+
+  - @project.documents.select{|doc| doc.is_archived }.each do |document|
+    = render 'document_block', { document: document }
+
+javascript:
+  var _DATA = #{{ ProjectSerializer.new(@project).to_json }};
+  var _RENDER_ALL = #{{ true_user.is_admin?.to_json }};

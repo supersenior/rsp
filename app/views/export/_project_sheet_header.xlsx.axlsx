@@ -1,0 +1,45 @@
+### Styles ###
+general_header  = wb.styles.add_style @base_style.merge @header_style
+date_header     = wb.styles.add_style @base_style.merge @header_style.merge(format_code: 'MM/DD/YYYY')
+
+# Sheet header
+# List the employer and all carriers
+header_values = [@project.employer.name] + @document_names
+header_styles = [general_header]
+sheet.add_row(header_values, style: header_styles)
+sheet.add_row([@project.effective_date] + [''] * @documents.size, style: [date_header]  + [general_header] * @documents.size)
+logo_cell_width = local_assigns[:financial] ? 230 : 200
+
+@document_logos.each_with_index do |logo, index|
+  path = "#{Rails.root}/public#{logo[0]}"
+  if logo[0].present? && File.exists?(path)
+    begin
+      sheet.add_image(image_src: path, noSelect: false, noMove: false) do |image|
+        ratio = logo[1]
+        raise 'Logo Image Error' if ratio == -1
+        if ratio > 4.2
+          width = 190
+          height = (width / ratio).to_i
+        else
+          height = 48
+          width = (height * ratio).to_i
+        end
+        image.start_at index + 1, 0
+        image.width = width
+        image.anchor.from.colOff = ((logo_cell_width - width) / 2 * 9525).to_i
+        image.anchor.from.rowOff = ((48 - height) / 2 * 9525).to_i
+        image.height = height
+      end
+    rescue => e
+      next
+    end
+    sheet.rows[0].cells[index + 1].value = ''
+  end
+end
+
+# Join the carrier names with the cell below them
+column = "B"
+@documents.size.times do
+  sheet.merge_cells "#{column}1:#{column}2"
+  column.next!
+end

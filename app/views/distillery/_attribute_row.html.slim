@@ -1,0 +1,15 @@
+tr class="#{attribute.required? ? "required" : "not-required"}"
+  td= local_assigns[:title].nil? ? attribute.display_name : title
+  - if attribute.value_class == DynamicValueAgeBand
+    td
+      = render 'distillery/age_band_row', attribute: attribute, object: object
+  - else
+    td= text_field_tag attribute.id, object.value_for_attribute(attribute), class: "updateable", data: { "orig-value" => object.value_for_attribute(attribute), is_attribute: true, selector: object.selector_for_attribute(attribute)}
+  td= local_assigns[:footer].nil? ? "" : footer
+
+- if attribute.is_rate?
+  tr class="#{attribute.required? ? "required" : "not-required"}"
+    td
+    td
+      | Is Atp Rate&nbsp;
+      = check_box_tag attribute.id, object.dynamic_value_for(attribute).try(:is_atp_rate), object.dynamic_value_for(attribute).try(:is_atp_rate), class: "updateable", data: { "orig-value" => object.dynamic_value_for(attribute).try(:is_atp_rate), "column-name" => "is_atp_rate", is_attribute: true}

@@ -1,0 +1,39 @@
+= form_for([:admin, @dynamic_attribute || new_dynamic_attribute]) do |f|
+
+  .field
+    = f.label :name
+    = f.text_field :display_name
+
+  .field
+    = f.label :parent_class
+    .select-wrapper
+    = f.select(:parent_class, [Product, ProductClass].map(&:name))
+
+  .field
+    = f.label :value_type
+    .select-wrapper
+      = f.select(:value_type, DynamicValue.descendants.map(&:name))
+
+  .field
+    = f.label :product_type_ids, "Product Types"
+    = f.collection_select :product_type_ids, ProductType.order(:name), :id, :name, {}, {multiple: true}
+
+  .field
+    = f.label :category_id
+    .select-wrapper
+      = f.select(:category_id, Category.all.map { |x| [x.name, x.id] })
+
+  .field
+    = f.label "Order"
+    = f.number_field :attribute_order
+
+  .field
+    = f.label :required
+    = f.check_box :required
+
+  .field
+    = f.label :is_a_rate
+    = f.check_box :is_rate
+
+  .actions
+    = f.submit

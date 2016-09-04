@@ -1,0 +1,59 @@
+/*-----------  Select Dropdowns  -----------*/
+
+.select-wrapper
+  position: relative
+  margin: 0.75em auto 0
+
+  select
+    margin-top: 0
+    margin-bottom: 0
+    cursor: pointer
+    color: lighten($gray ,15%)
+    border-radius: $radius
+    background-color: $white
+
+  &:before
+    top: 1px
+    right: 3px
+    width: 4em
+    height: 90%
+    content: ''
+    position: absolute
+    pointer-events: none
+    @include background-image(linear-gradient(to left, rgba($white, 1) 50%, rgba($white, 0)))
+
+  &:after
+    top: 1px
+    color: $grayLight
+    right: 0.67rem
+    font-size: 0.9em
+    position: absolute
+    line-height: 2.67em
+    pointer-events: none
+    @include use-icon('\e002')
+
+  label
+    position: relative
+
+  /*-----------  Hover States  -----------*/
+
+  &:hover
+
+    &:after
+      color: $gray
+
+    select
+      color: $gray
+
+/*-----------  Error States  -----------*/
+
+.has-error
+
+  .select-wrapper
+    margin-bottom: 0
+
+    &:after
+      color: $red
+
+  select
+    background-color: rgba($red, 0.05) !important

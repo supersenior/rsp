@@ -1,0 +1,35 @@
+/*-----------  Tabs  -----------*/
+
+.wt-tabs
+  width: 100%
+  height: 100%
+  position: relative
+
+  .wt-tabs__navigation
+    top: 0
+    left: 0
+    padding: 0 1em
+    position: absolute
+
+    .wt-tabs__menu-item
+      margin-right: 0.15em
+      box-shadow: $shadowDark
+      background-color: $grayLighter
+      border-radius: 0 0 $radius $radius
+      @include inline-block()
+
+      a
+        padding: 0.5em 1em
+        @include inline-block()
+
+      &.wt-tabs__menu-item--active
+        pointer-events: none
+        background-color: $white
+
+  .wt-tabs__panel
+    width: 100%
+    height: 100%
+    display: none
+
+    &.wt-tabs__panel--active
+      display: block

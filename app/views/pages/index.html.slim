@@ -1,0 +1,15 @@
+.wt-island-block
+
+  = image_tag 'logo.png', :class => 'wt-island-block__logo'
+
+  form
+
+    - if current_user && current_user.is_admin?
+      = link_to 'Admin Dashboard', admin_path, :class => 'button'
+
+    = link_to 'Broker Dashboard', projects_path, :class => 'button'
+    br
+
+    - unless current_user
+      small
+        = link_to 'Log In', log_in_path

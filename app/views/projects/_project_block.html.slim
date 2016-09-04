@@ -1,0 +1,16 @@
+.wt-rfp-block
+
+  = link_to project.employer.name, project_path(project), :class => 'wt-rfp-block__title'
+
+  small.wt-rfp-block__timestamp
+    - if is_active
+      | Last opened:
+      = project.created_at.strftime("%m/%d/%y")
+    - else
+      | Archived:
+      = project.created_at.strftime("%m/%d/%y")
+    - if project.user_id != current_user.id
+      br
+      = project.user.email
+
+  = react_component('EditProjectName', { projectId: project.id, name: project.employer.name })

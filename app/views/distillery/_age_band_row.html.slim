@@ -1,0 +1,14 @@
+table
+  tr
+    th colspan=2
+      | Composite Value
+  tr
+    td Composite
+    td= text_field_tag attribute.id, object.value_for_attribute(attribute).try(:[], "composite"), class: "updateable", data: {is_attribute: true, sub_attribute: "composite", selector: object.selector_for_attribute(attribute)}
+  tr
+    th colspan=2
+      | Age Band
+  - DynamicValueAgeBand.age_band_keys.each do |key|
+    tr
+      td= display_for_age_band(key)
+      td= text_field_tag attribute.id, object.value_for_attribute(attribute).try(:[], key.to_s), class: "updateable", data: {is_attribute: true, sub_attribute: key, selector: object.selector_for_attribute(attribute)}

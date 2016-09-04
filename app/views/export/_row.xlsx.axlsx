@@ -1,0 +1,131 @@
+attribute = row.try(:[], :attribute)
+
+### Styles ###
+row_style            = @base_style.deep_merge(attribute.try(:export_styles) || {})
+age_band_header      = wb.styles.add_style @base_style.merge({u: true})
+cell_data            = wb.styles.add_style row_style
+label_data           = wb.styles.add_style @base_style.merge({alignment: {horizontal: :left, vertical: :center, wrap_text: true}})
+equivalent_cell_data = wb.styles.add_style row_style.merge(@equivalent_cell_style)
+worse_cell_data      = wb.styles.add_style row_style.merge(@worse_cell_style)
+better_cell_data     = wb.styles.add_style row_style.merge(@better_cell_style)
+
+product_type_name     = Axlsx::coder.decode sheet.name
+
+determine_row_style = Proc.new do |value|
+  style = @base_style
+  if value.try(:value).blank?
+    @unstated_cell_style
+  elsif value.better?
+    better_cell_data
+  elsif value.worse?
+    worse_cell_data
+  elsif value.equivalent?
+    equivalent_cell_data
+  else
+    cell_data
+  end
+end
+
+if row
+  #### Age Band Row ####
+  # Split the age bands up and create a row for each band
+  if attribute.value_type == "DynamicValueAgeBand"
+    age_band_rows = []
+    row_name = attribute.display_name
+    row_name += " - Class #{[row[:class]].join(', ')}" if include_class_index
+    age_band_rows.push [row_name]
+
+    data = row[:values].map { |x| "Rate"}.unshift("Age Band")
+    age_band_rows.push data
+
+    composite_vals = row[:values].map { |v| v.try(:composite) }
+    composite_exists = composite_vals.any?(&:present?)
+    if composite_exists
+      composite_vals.unshift('Composite')
+      age_band_rows.push composite_vals
+    end
+    age_bands = []
+    DynamicValueAgeBand.age_band_keys.each do |age_band|
+      row_vals = row[:values].map { |v| v.try(:value).try(:[], age_band.to_s) }
+      next if row_vals.all?(&:blank?) # skip age band if all rate are blank
+      row_vals.unshift(display_for_age_band(age_band))
+      age_bands.push row_vals
+    end
+    age_band_rows.concat age_bands if age_bands.present? || !composite_exists
+
+    if age_band_rows.size > 2 || attribute.required?
+      # show Unstated for blank rate
+      age_band_rows.each_with_index do |data, index|
+        data_styles = []
+        data.each_with_index do |val, i|
+          data[i] = "Unstated" if val.blank?
+          if index < 2 || i == 0
+            data_styles.push cell_data
+          else
+            if val.blank?
+              data_styles.push @unstated_cell_style
+            else
+              data_styles.push determine_row_style.call(row[:values][i - 1])
+            end
+          end
+        end
+        data_row = sheet.add_row(data, { style: data_styles })
+
+        # Add defined name and collect financial data
+        if index == 0
+          @financial_data[product_type_name] << {values: [row_name], styles: [cell_data]} if financial
+        else
+          column = 'B'
+          defined_names = []
+          @document_names.each_with_index do |document_name, ii|
+            cell_name = export_cell_name(@project.id, product_type_name, "#{row_name}#{data[0]}", "#{ii}#{document_name}")
+            defined_names << "=#{cell_name}"
+            wb.add_defined_name("'#{sheet.name}'!$#{column}$#{data_row.index + 1}", name: cell_name)
+            column.next!
+          end
+          @financial_data[product_type_name] << {values: [data[0]] + defined_names, styles: data_styles} if financial
+        end
+      end
+    end
+  else
+    #### Normal Row ####
+    # Map the rows to their values.  Replace nil or blank values with "Unstated"
+    row_vals = row[:values].map { |v| format_value(attribute.is_rate? ? :float : attribute.export_configuration.format, v.try(:value)) }
+
+    return if !attribute.required? && row_vals.all?(&:blank?) # hide the row if all are unstated
+    row_vals.each_with_index { |v, i| row_vals[i] = "Unstated" if v.blank? }
+
+    # Map row to their styles using the values comparison flags
+    row_styles = row[:values].map { |v| determine_row_style.call(v) }
+    row_styles.unshift(label_data)
+
+    # Row types
+    default_format = attribute.export_configuration.options[:format]
+    default_format = :float if attribute.is_rate?
+    row_types = []
+    if default_format
+      row_types = [:string] + row[:values].map { |v| v.try(:value).blank? ? :string : default_format }
+    end
+
+    # Set the first column in the row to the attribute name.
+    row_name = attribute.display_name
+    row_name += " - Class #{[row[:class]].join(', ')}" if include_class_index
+    row_vals.unshift(row_name)
+
+    # Write the row
+    row = sheet.add_row(row_vals, { style: row_styles, types: row_types })
+
+    # Add defined name and collect financial data
+    column = 'B'
+    defined_names = []
+    @document_names.each_with_index do |document_name, index|
+      cell_name = export_cell_name(@project.id, product_type_name, row_name, "#{index}#{document_name}")
+      defined_names << "=#{cell_name}"
+      wb.add_defined_name("'#{sheet.name}'!$#{column}$#{row.index + 1}", name: cell_name)
+      column.next!
+    end
+    if financial
+      @financial_data[product_type_name] << {values: [row_name] + defined_names, styles: row_styles}
+    end
+  end
+end

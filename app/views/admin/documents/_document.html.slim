@@ -1,0 +1,22 @@
+- keys_to_render = []
+
+#document_data data-content=document.to_json data-authenticity-token=form_authenticity_token()
+
+- if @document.sources.present?
+  section.document
+    .attribute_container data-update-path=admin_document_path(document) data-type="document"
+      table
+        - keys_to_render.each do |attribute|
+          = render 'distillery/attribute_row', attribute: attribute, object: document
+
+    section.products
+      .section_header
+        span.title products
+        = form_for :product, url: admin_document_products_path(@document) do |f|
+          div
+            = f.label "Type: "
+            .select-wrapper
+              = f.select(:product_type_id, ProductType.all.map { |x| [x.name, x.id] } )
+            = f.submit "New Product"
+      = render @document.products.order("id ASC")
+      br.clear

@@ -1,0 +1,73 @@
+/*-----------  Header  -----------*/
+
+.wt-page-header
+  z-index: 100
+  position: relative
+  box-shadow: $shadowDark
+  background-color: $white
+  @include flex-layout()
+
+  .wt-page-header__nav
+    text-align: right
+    padding: 0em $gutterSm
+    @include flex(1 0 auto)
+
+    > *
+      @include inline-block()
+
+  .wt-page-header__logo
+    padding: 0 $gutterSm
+
+    img
+      width: auto
+      height: 1.5em
+
+    span
+      color: #F00
+      font-weight: bold
+      margin-left: 10px
+
+  .wt-page-header__link
+    color: $gray
+    padding: 0.5em 1em
+    margin-left: 0.67em
+
+    i
+      top: 1px
+      opacity: 0.85
+      font-size: 90%
+      position: relative
+      margin-right: 0.75em
+
+      &.icon-export
+        top: 2px
+
+    &:hover,
+    &.selected
+      color: $blue
+
+    &.wt-page-header__link--button
+      border-radius: $radius
+      border: 1px solid $grayLighter
+
+      &:hover
+        border-color: $blueLight
+
+  .wt-dropdown
+    padding: 1.5em
+    color: $grayLight
+    background-color: $grayDarker
+
+    span
+      @include transition()
+
+    .wt-dropdown__block
+      right: 0.5em
+      margin-top: 0.75rem
+
+    &:hover,
+    &:hover .icon-down
+      color: $white
+
+      .wt-dropdown__block
+        margin-top: 1.15rem

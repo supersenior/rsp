@@ -1,0 +1,21 @@
+.wt-page-content
+
+  main.wt-page-content__main
+
+    - documents_by_state.each do |state, data|
+      h2.h2= data[:description]
+      table border=1
+        tr
+          th Project Name
+          th Type
+          th Due In
+        - data[:documents].each do |document|
+          tr
+            td= link_to(document.project.name || document.project.employer.name, admin_document_path(document))
+            td= document.document_type
+            td
+              = distance_of_time_in_words(document.due_date, Time.now)
+              - if Time.now > document.due_date
+                span.overdue
+                  |  (overdue)
+      br

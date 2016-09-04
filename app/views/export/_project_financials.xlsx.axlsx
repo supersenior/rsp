@@ -1,0 +1,106 @@
+## Styles
+blue_bar_style    = wb.styles.add_style @base_style.deep_merge({border: {edges: [:top, :bottom]}, bg_color: 'B2DEFF'})
+total_header      = wb.styles.add_style @base_style.merge({sz: 12, b: true, u: true})
+document_name     = wb.styles.add_style @base_style.merge @header_style
+label_data        = wb.styles.add_style @base_style.merge({alignment: {horizontal: :left, vertical: :center, wrap_text: true}})
+normal_data       = wb.styles.add_style @base_style
+currency_data     = wb.styles.add_style @base_style.merge({format_code: '$#,##0'})
+percent_data      = wb.styles.add_style @base_style.merge({format_code: '0%'})
+red_color_data    = wb.styles.add_style @base_style.merge({fg_color: 'FF0000', type: :dxf})
+green_color_data  = wb.styles.add_style @base_style.merge({fg_color: '70AD47', type: :dxf})
+
+render partial: 'export/project_sheet_header', locals: {wb: wb, sheet: sheet, financial: true}
+
+@financial_data.each do |product_type, values|
+  sheet.add_row([product_type], style: @category_header_style)
+
+  values.each do |value|
+    sheet.add_row value[:values], style: value[:styles]
+  end
+
+  sheet.add_row [] unless @financial_data.keys.last == product_type
+end
+
+sheet.add_row [' '] * (@documents.size + 1), style: blue_bar_style
+total_header_row = sheet.add_row(['Annual Premium'] + @document_names, style: [total_header] + [document_name] * @documents.size, height: 47)
+@document_logos.each_with_index do |logo, index|
+  path = "#{Rails.root}/public#{logo[0]}"
+  if logo[0].present? && File.exists?(path)
+    begin
+      sheet.add_image(image_src: path, noSelect: false, noMove: false) do |image|
+        ratio = logo[1]
+        raise 'Logo Image Error' if ratio == -1
+        if ratio > 4.2
+          width = 190
+          height = (width / ratio - 2).to_i
+        else
+          height = 46
+          width = (height * ratio).to_i
+        end
+        image.start_at index + 1, total_header_row.index
+        image.width = width
+        image.anchor.from.colOff = ((230 - width) / 2 * 9525).to_i
+        image.anchor.from.rowOff = ((60 - height) / 2 * 9525).to_i
+        image.height = height
+      end
+    rescue => e
+      next
+    end
+    total_header_row.cells[index + 1].value = ''
+  end
+end
+
+premium_start_index = sheet.rows.last.index
+premium_count = 0
+@financial_data.each do |product_type, values|
+  annual_values = values.select { |value| value[:values][0].include?('Premium (annually)') }
+  next if annual_values.size == 0
+
+  premium_values = []
+  @documents.size.times do |index|
+    fields = annual_values.map { |value| value[:values][index + 1][1..-1] }
+    premium_values << "=SUM(#{fields.join(',')})"
+  end
+  premium_values.unshift "#{product_type} Premium (annually)"
+
+  sheet.add_row premium_values, style: [label_data] + [currency_data] * @documents.size
+  premium_count += 1
+end
+
+if premium_count > 0
+  column = 'B'
+  total_values = ['Combined Premium']
+  @documents.size.times do |index|
+    total_values << "=SUM(#{column}#{premium_start_index+2}:#{column}#{premium_start_index + premium_count + 1})"
+    column.next!
+  end
+
+  total_row_index = sheet.add_row(total_values, style: [label_data] + [currency_data] * @documents.size).index + 1
+
+  premium_percent = ['% Difference from current', 'n/a']
+  column = 'C'
+  (@documents.size - 1).times do
+    premium_percent << "=(#{column}#{total_row_index}/B#{total_row_index}) - 1"
+    column.next!
+  end
+  percent_row = sheet.add_row premium_percent, style: [label_data, normal_data] + [percent_data] * (@documents.size - 1)
+
+  column = 'C'
+  premium_diff = ['$ Difference from current', 'n/a']
+  (@documents.size - 1).times do
+    premium_diff << "=#{column}#{total_row_index} - B#{total_row_index}"
+    column.next!
+  end
+  sheet.add_row premium_diff, style: [label_data, normal_data] + [currency_data] * (@documents.size - 1)
+
+  column = 'C'
+  (@documents.size - 2).times { column.next! }
+  sheet.add_conditional_formatting(
+    "C#{percent_row.index + 1}:#{column}#{percent_row.index + 2}",
+    {type: :cellIs, operator: :greaterThan, formula: '0', dxfId: red_color_data, priority: 1}
+  )
+  sheet.add_conditional_formatting(
+    "C#{percent_row.index + 1}:#{column}#{percent_row.index + 2}",
+    {type: :cellIs, operator: :lessThan, formula: '0', dxfId: green_color_data, priority: 1}
+  )
+end

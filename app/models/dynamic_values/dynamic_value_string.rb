@@ -1,0 +1,3 @@
+class DynamicValueString < DynamicValue
+
+end

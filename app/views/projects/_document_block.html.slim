@@ -1,0 +1,16 @@
+.wt-document-block
+
+  small.wt-document-block__filename
+    = document.sources.map(&:file_file_name).compact[0]
+
+  img.wt-document-block__logo src=document.carrier.logo_url
+
+  small.wt-document-block__timestamp
+    | Last updated:
+    = document.updated_at.strftime("%m/%d/%y")
+
+  .wt-dropdown
+    i.icon-down
+    ul.wt-dropdown__block
+      li
+        a(data-action='unarchive-document' data-document-id=document.id) Unarchive proposal

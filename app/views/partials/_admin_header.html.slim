@@ -1,0 +1,13 @@
+header.wt-page-header
+
+  = link_to image_tag('logo.png'), admin_path, :class => 'wt-page-header__logo'
+
+  nav.wt-page-header__nav
+
+    = link_to admin_stats_path, :class => 'wt-page-header__link wt-page-header__link--button' do
+      i.icon-documents
+      | Stats
+
+  = render 'partials/user_dropdown'
+
+= render 'partials/flash_messages'

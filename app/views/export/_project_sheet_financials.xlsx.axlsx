@@ -1,0 +1,57 @@
+### FINANCIALS ###
+### Looks kind of dirty, but on a time crunch and this works
+
+## Volume ##
+volume = @export_params[:volumes].try(:[], product_type.id)
+if volume && volume != 0
+  volume_attribute = DynamicAttribute.new display_name: 'Volume', export_configuration: {num_fmt: 3}
+  row = {attribute: volume_attribute, class: 0, values: (@documents.map { |d| DynamicValueString.new(value: volume) })}
+  render partial: 'export/row', locals: {wb: wb, sheet: sheet, row: row, include_class_index: false, financial: true}
+
+  ## Monthly Premium ##
+  premium_attribute = DynamicAttribute.new display_name: 'Premium (monthly)', export_configuration: {format: :currency}
+  class_index = 1
+  class_rows = []
+
+  loop do
+    class_encountered = false
+    # calculate the monthly premium for each document / class
+    row_values = @documents.map do |document|
+      val = nil
+      unless (product = document.products.detect { |p| p.product_type_id == product_type.id }).nil?
+        unless (product_class = product.product_classes.detect { |pc| pc.class_number == class_index}).nil?
+          class_encountered = true
+          unless product_class.monthly_premium(volume).nil?
+            val = DynamicValueString.new(value: product_class.monthly_premium(volume))
+          end
+        end
+      end
+
+      val
+    end
+
+    class_rows << {attribute: premium_attribute, class: class_index, values: row_values} if class_encountered
+    class_index += 1
+    break unless class_encountered
+  end
+
+  # Render the monthly premiums and then render the annual premiums
+  unless class_rows.all? { |c| c[:values].all? { |v| v.nil? }}
+    class_rows = class_rollup class_rows
+    include_class_index = class_rows.length > 1
+
+    class_rows.each do |row|
+      render partial: 'export/row', locals: {wb: wb, sheet: sheet, row: row, include_class_index: include_class_index, financial: true}
+    end
+
+    # Render each annual premium
+    class_rows.each do |row|
+      row[:values].each do |x|
+        next unless x
+        x.value = x.value.try(:to_f).try(:*, 12)
+      end
+      row[:attribute].display_name = 'Premium (annually)'
+      render partial: 'export/row', locals: {wb: wb, sheet: sheet, row: row, include_class_index: include_class_index, financial: true}
+    end
+  end
+end

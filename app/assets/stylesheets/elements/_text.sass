@@ -1,0 +1,97 @@
+/*-----------  Headers  -----------*/
+
+$all-headers : assign-inputs('h1' 'h2' 'h3' 'h4' 'h5' 'h6')
+$all-header-classes : assign-inputs('.h1' '.h2' '.h3' '.h4' '.h5' '.h6')
+
+#{$all-headers}
+  font-size: 1em
+  font-weight: normal
+
+#{$all-header-classes}
+  color: inherit
+  margin: 0 auto
+  line-height: 100%
+  margin-bottom: 0.67rem
+  font-weight: $fontWeightLight
+
+.h1
+  font-size: 2em
+  @include media($mobileBreak)
+    font-size: 1.75em
+
+.h2
+  font-size: 1.75em
+  @include media($mobileBreak)
+    font-size: 1.67em
+
+.h3
+  font-size: 1.67em
+  @include media($mobileBreak)
+    font-size: 1.5em
+
+.h4
+  font-size: 1.5em
+  @include media($mobileBreak)
+    font-size: 1.33em
+
+.h5
+  font-size: 1.33em
+  @include media($mobileBreak)
+    font-size: 1.25em
+
+.h6
+  font-size: 1.05em
+  letter-spacing: 0
+  @include media($mobileBreak)
+    font-size: 1.15em
+
+/*-----------  Anchors (links)  -----------*/
+
+a
+  color: $blue
+  cursor: pointer
+  text-decoration: none
+  @include transition()
+
+  &:hover,
+  &.selected
+    color: $blueDark
+
+  &.twitter-link:hover
+    color: $twitter
+
+  &.facebook-link:hover
+    color: $facebook
+
+  &.gplus-link:hover
+    color: $google
+
+/*-----------  Paragraphs  -----------*/
+
+p
+  margin: 0
+  line-height: 167%
+  letter-spacing: 0.03em
+
+  &:last-child
+    margin-bottom: 0
+
+  a
+    line-height: 133%
+    text-decoration: none
+    border-bottom: 1px solid $grayLight
+    @include inline-block()
+
+    &:hover
+      color: $red
+      border-bottom-color: $redLight
+
+  & + p
+    margin-top: 1.15em
+
+/*-----------  Other  -----------*/
+
+small
+  font-size: 80%
+  color: $grayLight
+

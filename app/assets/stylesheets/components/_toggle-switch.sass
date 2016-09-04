@@ -1,0 +1,80 @@
+/*-----------  Toggle Switch  -----------*/
+
+.wt-toggle-switch
+  font-size: 85%
+  text-align: right
+  color: $grayLight
+  margin-right: 0.4em
+  margin-bottom: 0.67em
+  font-weight: $fontWeightLight
+
+  .wt-toggle-switch__label
+    margin-right: 0.67em
+
+  .wt-toggle-switch__switch
+    width: 4.2em
+    padding: 2px
+    height: 1.9em
+    position: relative
+    border-radius: 4px
+    border: 1px solid $grayLight
+    @include inline-block()
+    @include transition()
+
+    .wt-toggle-switch__switch--on,
+    .wt-toggle-switch__switch--off
+      top: 5%
+      font-size: 80%
+      padding: 0.33em
+      position: absolute
+      @include transition()
+
+    .wt-toggle-switch__switch--on
+      left: 5%
+      opacity: 0
+
+    .wt-toggle-switch__switch--off
+      right: 5%
+
+    .wt-toggle-switch__switch--block
+      top: 10%
+      left: 5%
+      width: 38%
+      height: 80%
+      position: absolute
+      border-radius: 3px
+      background-color: $grayLight
+      @include transition(0.1s)
+
+  /*-----------  States  -----------*/
+
+  &:hover,
+  &.wt-toggle-switch--on
+    cursor: pointer
+
+    .wt-toggle-switch__switch
+      border-color: $grayLighter
+
+      .wt-toggle-switch__switch--on,
+      .wt-toggle-switch__switch--off
+        color: $grayLighter
+
+      .wt-toggle-switch__switch--block
+        background-color: $grayLighter
+
+  /*-----------  States  -----------*/
+
+  &.wt-toggle-switch--on
+
+    .wt-toggle-switch__switch
+      box-shadow: inset $shadow
+      background-color: $green
+
+      .wt-toggle-switch__switch--on
+        opacity: 1
+
+      .wt-toggle-switch__switch--off
+        opacity: 0
+
+      .wt-toggle-switch__switch--block
+        left: 57%

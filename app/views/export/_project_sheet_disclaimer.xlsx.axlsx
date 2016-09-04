@@ -1,0 +1,15 @@
+disclaimer = "This document contains a summary of the benefits, provisions, rates, and other information found in the insurance company documents provided to WatchTower Benefits, LLC. This summary does not replace any insurance company document, and is not intended in any way to modify their meanings. If there is ever a conflict, then the controlling document will be that provided by the insurance company."
+
+# Add spacer row
+sheet.add_row([])
+
+# Add the disclaimer row
+row = sheet.add_row([disclaimer], style: @disclaimer_style, height: 50)
+row_index = row.index + 1
+
+# Determine number of columns to join then join them
+column = "A"
+@project.documents.finalized.size.times do
+  column.next!
+end
+sheet.merge_cells "A#{row_index}:#{column}#{row_index}"

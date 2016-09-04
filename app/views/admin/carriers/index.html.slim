@@ -1,0 +1,22 @@
+main.wt-page-content__main
+
+  h1.h1 Carriers
+  hr
+
+  div
+    h2 New Carrier
+    = render "form"
+
+  br
+  table border=1
+    tr
+      th Id
+      th Name
+      th Actions
+    - @carriers.each do |c|
+      tr
+        td= c.id
+        td= link_to(c.name, admin_carrier_orderings_path(c))
+        td
+          span= link_to "edit", edit_admin_carrier_path(c)
+          |  #{link_to("destroy", admin_carrier_path(c), method: :delete, data: { confirm: 'Are you sure?' })}

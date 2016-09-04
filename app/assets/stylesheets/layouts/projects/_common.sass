@@ -1,0 +1,73 @@
+/*-----------  RFP Blocks  -----------*/
+
+.wt-rfp-block
+  margin: 0.5rem 0
+  position: relative
+  border-radius: $radius
+  background-color: $white
+  padding: ($gutter*1.33) $gutter
+  border: 1px solid $grayLighter
+
+  .wt-rfp-block__title
+    display: block
+    line-height: 150%
+    margin-bottom: -0.15em
+    @include ellipsis()
+    @extend .h2
+
+  .wt-rfp-block__timestamp
+    display: block
+    @include ellipsis()
+
+  .wt-dropdown
+    right: 0.75em
+    bottom: 0.33em
+    position: absolute
+
+/*-----------  Document Blocks  -----------*/
+
+.wt-document-block
+  margin: 0.5rem 0
+  position: relative
+  text-align: center
+  border-radius: $radius
+  background-color: $white
+  border: 1px solid $grayLighter
+  padding: ($gutterSm / 2) $gutter
+
+  .wt-rfp-block__title
+    display: block
+    line-height: 150%
+    margin-bottom: -0.15em
+    @include ellipsis()
+    @extend .h2
+
+  .wt-document-block__logo
+    height: auto
+    display: block
+    max-width: 160px
+    margin: 0.4em auto
+
+  .wt-rfp-block__timestamp
+    display: block
+    @include ellipsis()
+
+  .wt-dropdown
+    right: 0.75em
+    bottom: 0.33em
+    position: absolute
+
+/*-----------  Contextual  -----------*/
+
+.wt-page-content__main
+
+  .wt-rfp-block
+    width: 82%
+    min-width: 35em
+    max-width: 50em
+
+.wt-page-content__sidebar
+
+  .wt-rfp-block
+    width: 100%
+    font-size: 80%

@@ -1,0 +1,14 @@
+= form_for([:admin, @category || Category.new]) do |f|
+
+  .field
+    = f.label :name
+    br
+    = f.text_field :name
+
+  .field
+    = f.label :category_order
+    br
+    = f.number_field :category_order
+
+  .actions
+    = f.submit

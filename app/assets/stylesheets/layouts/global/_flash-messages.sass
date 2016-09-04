@@ -1,0 +1,35 @@
+/*-----------  Flash Messages  -----------*/
+
+.wt-flash-messages
+  color: $white
+  z-index: 99
+  text-align: center
+  box-shadow: $shadowDark
+  background-color: $blue
+  font-weight: $fontWeightBold
+  border-radius: 0 0 $radiusLg $radiusLg
+  @include horizontal-align()
+  @include inline-block()
+
+  .wt-flash-messages__message
+    margin: 0.67em
+    font-size: 85%
+    padding: 0.25em 0.75em
+    border-radius: $radius
+    @include inline-block()
+
+  .wt-flash-messagee__close
+    top: 1px
+    margin-left: 1em
+    position: relative
+    color: rgba($white, 0.5)
+    @include inline-block()
+
+    &:hover
+      color: $white
+
+  /*-----------  Flash Colors  -----------*/
+
+  &.wt-flash-messages--alert
+    background-color: $red
+

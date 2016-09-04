@@ -1,0 +1,76 @@
+main.wt-page-content__main
+
+  h1.h1 Dynamic Attributes
+  hr
+
+  div
+    h2 New Dynamic Attribute
+    = render "form"
+
+  table border=1
+    tr
+      th Name
+      th Order
+      th Type
+      th Parent
+      th Eligible Products
+      th Category
+      th Required
+      th Rate?
+      th Actions
+    - @dynamic_attributes.each do |da|
+      tr
+        td= da.display_name
+        td= da.attribute_order
+        td= da.value_type
+        td= da.parent_class
+        td
+          = da.product_types.map(&:name).join(", ")
+        td= da.category.try(:name)
+        td= da.required ? "X" : ""
+        td= da.is_rate ? "X" : ""
+        td
+          span= link_to "edit", edit_admin_dynamic_attribute_path(da)
+          |  #{link_to("destroy", admin_dynamic_attribute_path(da), method: :delete, data: { confirm: 'Are you sure?' })}
+
+  hr
+  h1.h1 Product Types
+  hr
+
+  table
+    tr
+      th Name
+      th Unit Rate Denominator
+      th Actions
+    - ProductType.all.each do |pt|
+      tr
+        td= pt.name
+        td= pt.unit_rate_denominator
+        td
+          span= link_to "edit", edit_admin_product_type_path(pt)
+          |  #{link_to("destroy", admin_product_type_path(pt), method: :delete, data: { confirm: 'Are you sure?' })}
+
+  div
+    h2 New Product Type
+    = render "admin/product_types/form"
+
+  hr
+  h1.h1 Categories
+  hr
+
+  table
+    tr
+      th Name
+      th Order
+      th Actions
+    - Category.order("category_order DESC").each do |c|
+      tr
+        td= c.name
+        td= c.category_order
+        td
+          span= link_to "edit", edit_admin_category_path(c)
+          |  #{link_to("destroy", admin_category_path(c), method: :delete, data: { confirm: 'Are you sure?' })}
+
+  div
+    h2 New Category
+    = render "admin/categories/form"

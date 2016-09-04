@@ -1,0 +1,9 @@
+= form_for([:admin, @ordering || @carrier.ordering.new]) do |f|
+
+  .field
+    = f.label :order_index
+    br
+    = f.text_field :display_name
+
+  .actions
+    = f.submit

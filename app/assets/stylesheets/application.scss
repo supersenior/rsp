@@ -1,0 +1,37 @@
+//= require jquery-ui
+//= require dropzone
+//= require_self
+
+//-----------  External Libraries  -----------//
+
+@import 'normalize-rails';
+@import 'bourbon';
+@import 'neat';
+
+@import 'fixed-data-table';
+
+//-----------  Application Settings  -----------//
+
+@import 'settings/variables';         // Global Variables & Settings
+@import 'settings/mixins';            // Additional Custom Mixins
+@import 'settings/fonts';             // Custom Font & Typeface Settings & Mixins
+@import 'settings/structure';         // Sturctural Settings & Mixins
+
+//-----------  HTML Elements  -----------//
+
+@import 'elements/*';                 // Standard HTML Elements
+@import 'elements/forms/*';           // HTML Form Elements & Buttons
+
+//-----------  Custom Components  -----------//
+
+@import 'components/*';               // Reusable Components
+
+//-----------  Page Layouts  -----------//
+
+@import 'layouts/common';             // Common Layout Blocks
+@import 'layouts/document';           // Document Layout
+@import 'layouts/global/*';           // Global Layouts
+@import 'layouts/distillery/*';       // Distillery Styling
+
+@import 'layouts/projects/*';         // Projects Dashobard Styling
+@import 'layouts/user/*';             // User/Session Pages Styling

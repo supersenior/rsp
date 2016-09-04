@@ -1,0 +1,52 @@
+## AXLSX setup
+wb = xlsx_package.workbook
+
+@attributes = attributes_for_products(@project.product_types)
+@document_names = @documents.map { |document| document.carrier.name }
+@document_logos = export_document_logos(@documents)
+@financial_data = {}
+
+## Define default styles
+@base_style = {
+  sz: 10,
+  alignment: { horizontal: :center, vertical: :center, wrap_text: true },
+  border: { style: :thin, color: 'E7E6E6' },
+  font_name: 'Calibri'
+}
+@header_style = {sz: 14, b: true}
+@equivalent_cell_style = { bg_color: 'FFFD86' }
+@worse_cell_style      = { bg_color: 'EAABAB' }
+@better_cell_style     = { bg_color: 'B6D7A8' }
+@unstated_cell_style   = wb.styles.add_style(@base_style.merge({fg_color: "F1C232", b: true, i: true}))
+@disclaimer_style      = wb.styles.add_style sz: 8, b: false, i: true, alignment: { horizontal: :center, vertical: :center, wrap_text: true }
+@category_header_style = wb.styles.add_style @base_style.merge({sz: 12, b: true, u: true, alignment: { vertical: :center, wrap_text: true }})
+
+## Global Options for Export
+first_column_width = 38 # ~ 3 inches
+default_column_width = 25 # ~ 2 inches
+column_widths = [first_column_width] + [default_column_width] * @documents.size
+financial_column_widths = [first_column_width] + [default_column_width * 1.15] * @documents.size
+freezing_pane = false # set true to show frozen panes
+
+@project.product_types.each do |product_type|
+  wb.add_worksheet(name: worksheet_safe_name(product_type.name)) do |sheet|
+    render partial: 'export/project_sheet', locals: {wb: wb, sheet: sheet, product_type: product_type}
+    sheet.column_widths *column_widths
+  end
+end
+
+wb.add_worksheet(name: 'Financial') do |sheet|
+  render partial: 'export/project_financials', locals: {wb: wb, sheet: sheet}
+  sheet.column_widths *financial_column_widths
+end
+
+wb.worksheets.each do |ws|
+  ws.sheet_view.show_grid_lines = false
+  ws.sheet_view.pane do |pane|
+    pane.top_left_cell = 'B3'
+    pane.state = :frozen_split
+    pane.y_split = 2
+    pane.x_split = 1
+    pane.active_pane = :bottom_right
+  end if freezing_pane
+end

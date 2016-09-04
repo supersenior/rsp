@@ -1,0 +1,1 @@
+require 'rtf2html'

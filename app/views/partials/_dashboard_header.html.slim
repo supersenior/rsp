@@ -1,0 +1,22 @@
+header.wt-page-header
+
+  .wt-page-header__logo
+    = @project.employer.name
+    - if true_user.is_admin?
+      span
+        | [VIEWING AS ADMIN]
+
+  nav.wt-page-header__nav
+
+    - if @project.documents_for_export.any?
+      = react_component('ExportProjectModal', {projectId: @project.id, exportURL: export_project_path(@project, format: 'xlsx')})
+
+    a.wt-page-header__link(data-action='toggle-sidebar')
+      i.icon-inbox
+      | View Proposal Archive
+
+    = react_component('NewProposalModal', projectId: @project.id)
+
+  = render 'partials/user_dropdown'
+
+= render 'partials/flash_messages'

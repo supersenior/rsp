@@ -1,0 +1,63 @@
+main.wt-page-content__main
+
+  h1.h4 General Information
+
+  table.info
+    tr
+      td Source files
+      td= raw links_to_sources_for_document(@document)
+    tr
+      td Project
+      td #{@document.project.name} - #{@document.project.employer.name}
+    tr
+      td Carrier
+      td
+        = select_tag 'carrier_id', options_for_select(([['No Carrier Assigned', nil]] + Carrier.all.map { |x| [x.name, x.id] }), @document.carrier_id), class: "object_attribute",\
+          data: {type: "document", attribute: "carrier_id", update_url: admin_document_path(@document), refresh: true}
+    tr
+      td Status
+      td= @document.state.humanize
+    tr
+      td Products
+      td
+        - @document.project.project_product_types.includes(:product_type).each do |project_product_type|
+          div
+            = project_product_type.product_type.name
+            - if project_product_type.inforce
+              |  (*)
+
+  - if @document.carrier
+    = button_tag "Toggle basic-only fields", class: "toggle_required"
+    = render partial: 'admin/documents/document', locals: { document: @document }
+
+    div
+      = form_for [:admin, @document, @document.sources.new], url: admin_document_sources_path(@document) do |f|
+        div
+          = f.label "Upload a proposal or policy that has been converted to HTML"
+          br
+          = f.file_field :file
+        div
+          = f.submit "Create"
+
+    br
+
+    div.stateManager
+      = form_for([:admin, @document], url: admin_document_path(@document), as: :document) do |f|
+        .field
+          = f.label "Set state: "
+          .select-wrapper
+            = f.select(:state, document_state_map)
+        .actions
+          = f.submit
+  - else
+    div Please enter a carrier
+
+
+aside.wt-page-content__sidebar
+
+  - if usable_sources.blank?
+    .wt-loading no usable sources
+  - else
+    .wt-loading loading...
+    = react_component('TabbedSources', {:sources => usable_sources}, {:class => 'wt-tabs-container'})
+

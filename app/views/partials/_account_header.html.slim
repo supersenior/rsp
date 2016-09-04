@@ -1,0 +1,15 @@
+header.wt-page-header
+
+  = link_to image_tag('logo.png'), projects_path, :class => 'wt-page-header__logo'
+
+  nav.wt-page-header__nav
+
+    a.wt-page-header__link(data-action='toggle-sidebar')
+      i.icon-inbox
+      | View RFP Archive
+
+    = react_component('NewProjectWizard')
+
+  = render 'partials/user_dropdown'
+
+= render 'partials/flash_messages'

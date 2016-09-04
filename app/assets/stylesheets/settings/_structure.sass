@@ -1,0 +1,42 @@
+/*-----------  Responsive Breakpoints  -----------*/
+
+$mobileBreak : new-breakpoint(max-width 25em 4)
+$middleBreak : new-breakpoint(max-width 37em 8)
+$tabletBreak : new-breakpoint(max-width 54em 12)
+$largeBreak  : new-breakpoint(max-width 64em 12)
+
+/*-----------  Full Spans  -----------*/
+
+@mixin full-span($padding: $gutterLg $gutter, $overflow: false)
+  width: 100%
+  padding: $padding
+
+  @if $overflow
+    overflow-x: hidden
+
+  @include media($tabletBreak)
+    padding-left: $gutterSm
+    padding-right: $gutterSm
+
+/*-----------  Bounds Wrapping  -----------*/
+
+@mixin bounds-wrapper($padding: 0, $max: $maxWidth)
+  *zoom: 1
+  max-width: $max
+  padding: $padding
+  margin-left: auto
+  margin-right: auto
+  position: relative
+
+/*-----------  Flex Layouts  -----------*/
+
+@mixin flex-layout($justify: space-between, $items: center, $content: stretch, $wrap: nowrap, $direction: row)
+  @include justify-content($justify)
+  @include flex-direction($direction)
+  @include align-content($content)
+  @include align-items($items)
+  @include flex-wrap($wrap)
+  @include display(flex)
+
+  > *
+    @include flex(0 1 auto)

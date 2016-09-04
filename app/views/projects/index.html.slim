@@ -1,0 +1,26 @@
+main.wt-page-content__main
+
+  h1.h1 Active RFP's
+
+  - @projects.sort_by { |p| p.employer.name.downcase }.each do |project|
+    = render 'project_block', { project: project, is_active: true }
+
+  - if @projects.empty?
+    .wt-rfp-block
+      em No Projects Added
+      small.wt-rfp-block__timestamp
+        | To start a project, click the "Add New Project" button at the top right of the screen.
+
+aside.wt-page-content__sidebar
+
+  a(data-action='hide-sidebar')
+    i.icon-right
+    | Close
+
+  h2.h2 Projects Archive
+
+  - @projects.each do |project|
+    = render 'project_block', { project: project, is_active: false }
+
+  - if @projects.empty?
+    small No archived projects

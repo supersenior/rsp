@@ -1,0 +1,87 @@
+/*-----------  Distillery / Admin  -----------*/
+
+body.wt-admin-page
+
+  .wt-page-content .wt-page-content__sidebar
+    display: block
+
+ul
+  list-style-type: none
+
+table.info
+  margin-bottom: 1em
+
+  td
+    vertical-align: top
+
+  td:first-child
+    font-weight: bold
+    padding-right: 2em
+
+section
+  border-top: 1px solid gray
+  margin: 10px
+  .section_header
+    padding: 10px 0 0 0
+    .title
+      text-transform: uppercase
+      margin: 10px
+      font-size: 14px
+      color: darkslateblue
+  .column
+    border: 1px solid lightgray
+    margin: 10px
+    float: left
+    .content
+      padding: 10px
+  .attribute_container
+    padding: 10px
+    tr
+      -moz-transition: background-color 0.25s
+      -webkit-transition: background-color 0.25s
+      -o-transition: background-color 0.25s
+      transition: background-color 0.25s
+    .success
+      background-color: rgb(134, 255, 134)
+    .failure
+      background-color: red
+    .category
+      text-transform: uppercase
+      font-weight: bold
+      font-size: 14px
+  .action
+    font-size: 0.85em
+    color: gray
+    text-decoration: none
+
+.clear
+  clear: both
+
+.left_column
+  float: left
+  width: 40%
+
+.right_column
+  position: fixed
+  right: 0
+  top: 0
+  width: 60%
+  height: 100%
+  iframe
+    width: 100%
+    height: 100%
+
+.collapsable, .toggle_required
+  cursor: pointer
+
+#pages-dashboard
+
+  table
+    border-collapse: collapse
+
+    td
+      padding: 5px 10px
+
+  .overdue
+    font-size: 0.85em
+    color: red

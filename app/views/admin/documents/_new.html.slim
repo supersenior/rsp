@@ -1,0 +1,7 @@
+= form_for [:admin, @project, proposal] do |f|
+  = f.label "Carrier: "
+  .select-wrapper
+    = f.select(:carrier_id) do
+      - Carrier.all.each do |c|
+        = content_tag(:option, c.name, value: c.id)
+  = f.submit "Create"
